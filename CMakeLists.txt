@@ -17,10 +17,6 @@ target_include_directories(${PROJECT_NAME} INTERFACE
   include
 )
 
-target_link_libraries(${PROJECT_NAME} INTERFACE
-  "-u _printf_float"
-)
-
 find_package(Doxygen)
 if(DOXYGEN_FOUND)
   set(DOXYGEN_EXTRACT_ALL YES)

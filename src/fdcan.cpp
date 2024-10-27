@@ -89,8 +89,7 @@ size_t FDCAN::available() { return osMessageQueueGetCapacity(rx_queue_); }
 
 } // namespace tutrc_harurobo_lib
 
-void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan,
-                               uint32_t RxFifo0ITs) {
+void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t) {
   static FDCAN_RxHeaderTypeDef rx_header;
   static tutrc_harurobo_lib::CANMessage msg;
 
