@@ -88,24 +88,27 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
   if (itr != tutrc_harurobo_lib::CAN::instances_.end()) {
     tutrc_harurobo_lib::CAN *can = itr->second;
 
-    if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, msg.data) !=
-        HAL_OK) {
-      return;
-    }
+    for (size_t i = HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0); i > 0;
+         --i) {
+      if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, msg.data) !=
+          HAL_OK) {
+        return;
+      }
 
-    switch (rx_header.IDE) {
-    case CAN_ID_STD:
-      msg.id_type = tutrc_harurobo_lib::CANIDType::STANDARD;
-      msg.id = rx_header.StdId;
-      break;
-    case CAN_ID_EXT:
-      msg.id_type = tutrc_harurobo_lib::CANIDType::EXTENDED;
-      msg.id = rx_header.ExtId;
-      break;
-    }
-    msg.dlc = rx_header.DLC;
+      switch (rx_header.IDE) {
+      case CAN_ID_STD:
+        msg.id_type = tutrc_harurobo_lib::CANIDType::STANDARD;
+        msg.id = rx_header.StdId;
+        break;
+      case CAN_ID_EXT:
+        msg.id_type = tutrc_harurobo_lib::CANIDType::EXTENDED;
+        msg.id = rx_header.ExtId;
+        break;
+      }
+      msg.dlc = rx_header.DLC;
 
-    osMessageQueuePut(can->rx_queue_, &msg, 0, 0);
+      osMessageQueuePut(can->rx_queue_, &msg, 0, 0);
+    }
   }
 }
 
