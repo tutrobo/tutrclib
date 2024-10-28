@@ -76,7 +76,7 @@ bool CAN::receive(CANMessage *msg, uint32_t timeout) {
   return osMessageQueueGet(rx_queue_, msg, nullptr, timeout) == osOK;
 }
 
-size_t CAN::available() { return osMessageQueueGetCapacity(rx_queue_); }
+size_t CAN::available() { return osMessageQueueGetCount(rx_queue_); }
 
 } // namespace tutrc_harurobo_lib
 
