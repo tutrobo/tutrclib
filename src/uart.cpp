@@ -32,7 +32,7 @@ bool UART::transmit(const uint8_t *data, size_t size) {
   if (!lock.acquire(osWaitForever)) {
     return false;
   }
-  if (HAL_UART_Transmit_DMA(huart_, data, size) != HAL_OK) {
+  if (HAL_UART_Transmit_IT(huart_, data, size) != HAL_OK) {
     return false;
   }
   uint8_t status;
