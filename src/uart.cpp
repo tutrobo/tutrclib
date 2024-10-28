@@ -18,8 +18,8 @@ UART::UART(UART_HandleTypeDef *huart, size_t rx_queue_size) : huart_(huart) {
   instances_[huart_] = this;
   tx_mutex_ = osMutexNew(nullptr);
   rx_mutex_ = osMutexNew(nullptr);
-  tx_sem_ = osSemaphoreNew(1, 0, nullptr);
-  rx_sem_ = osSemaphoreNew(1, 0, nullptr);
+  tx_sem_ = osSemaphoreNew(1, 1, nullptr);
+  rx_sem_ = osSemaphoreNew(1, 1, nullptr);
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(uint8_t), nullptr);
 
   if (HAL_UART_Receive_IT(huart_, &rx_buf_, 1) != HAL_OK) {
@@ -30,10 +30,10 @@ UART::UART(UART_HandleTypeDef *huart, size_t rx_queue_size) : huart_(huart) {
 bool UART::transmit(const uint8_t *data, size_t size) {
   ScopedLock lock(tx_mutex_);
   lock.acquire(osWaitForever);
+  osSemaphoreAcquire(tx_sem_, osWaitForever);
   if (HAL_UART_Transmit_IT(huart_, data, size) != HAL_OK) {
     return false;
   }
-  osSemaphoreAcquire(tx_sem_, osWaitForever);
   return true;
 }
 
@@ -96,6 +96,7 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
     tutrc_harurobo_lib::UART *uart = itr->second;
     HAL_UART_Abort(huart);
     osSemaphoreRelease(uart->tx_sem_);
+    osSemaphoreRelease(uart->rx_sem_);
     HAL_UART_Receive_IT(huart, &uart->rx_buf_, 1);
   }
 }
