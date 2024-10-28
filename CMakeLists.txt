@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(tutrc_harurobo_lib)
+project(tutrc_harurobo_lib LANGUAGES CXX)
 
 add_library(${PROJECT_NAME} INTERFACE)
+
+target_include_directories(${PROJECT_NAME} INTERFACE include)
+
+target_link_libraries(${PROJECT_NAME} INTERFACE "-u _printf_float")
 
 target_sources(${PROJECT_NAME} INTERFACE
   src/can.cpp
@@ -11,14 +15,6 @@ target_sources(${PROJECT_NAME} INTERFACE
   src/gpio.cpp
   src/pwm.cpp
   src/uart.cpp
-)
-
-target_include_directories(${PROJECT_NAME} INTERFACE
-  include
-)
-
-target_link_libraries(${PROJECT_NAME} INTERFACE
-  "-u _printf_float"
 )
 
 find_package(Doxygen)
