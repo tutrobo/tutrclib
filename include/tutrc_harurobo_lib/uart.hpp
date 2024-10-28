@@ -5,11 +5,8 @@
 #include <cstddef>
 #include <cstdint>
 #include <unordered_map>
-#include <vector>
 
-#include "FreeRTOS.h"
 #include "cmsis_os2.h"
-#include "queue.h"
 
 extern "C" int _write(int file, char *ptr, int len);
 
@@ -19,8 +16,6 @@ namespace tutrc_harurobo_lib {
  * UARTクラスを使う際は、
  *
  * - USARTx global interrupt
- * - USARTx_TX DMA (Mode: Normal)
- * - USARTx_RX DMA (Mode: Circular)
  *
  * を有効化する必要があります。
  *
@@ -63,9 +58,9 @@ public:
    * コンストラクタ
    *
    * @param huart UART_HandleTypeDefへのポインタ
-   * @param rx_buf_size 受信バッファサイズ
+   * @param rx_queue_size 受信バッファサイズ
    */
-  UART(UART_HandleTypeDef *huart, size_t rx_buf_size = 64);
+  UART(UART_HandleTypeDef *huart, size_t rx_queue_size = 64);
 
   /**
    * UART送信
@@ -105,17 +100,15 @@ private:
   UART_HandleTypeDef *huart_;
   osMutexId_t tx_mutex_;
   osMutexId_t rx_mutex_;
-  QueueHandle_t tx_queue_;
-  QueueHandle_t rx_queue_;
-  std::vector<uint8_t> rx_buf_;
-  uint16_t rx_buf_head_ = 0;
-  uint16_t rx_buf_tail_ = 0;
+  osSemaphoreId_t tx_sem_;
+  osSemaphoreId_t rx_sem_;
+  osMutexId_t rx_queue_;
+  uint8_t rx_buf_;
 
   static std::unordered_map<UART_HandleTypeDef *, UART *> instances_;
   static UART *uart_printf_;
   friend void ::HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
-  friend void ::HAL_UARTEx_RxEventCallback(UART_HandleTypeDef *huart,
-                                           uint16_t Size);
+  friend void ::HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
   friend void ::HAL_UART_ErrorCallback(UART_HandleTypeDef *huart);
   friend int ::_write(int file, char *ptr, int len);
 };
