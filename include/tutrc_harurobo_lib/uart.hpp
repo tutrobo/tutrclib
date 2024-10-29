@@ -59,7 +59,7 @@ public:
    * UART初期化
    *
    * @param huart UART_HandleTypeDefへのポインタ
-   * @param rx_queue_size 受信バッファサイズ
+   * @param rx_queue_size 受信キューサイズ
    * @return true: 成功, false: 失敗
    */
   bool init(UART_HandleTypeDef *huart, size_t rx_queue_size = 64);
@@ -84,12 +84,12 @@ public:
   bool receive(uint8_t *data, size_t size, uint32_t timeout);
 
   /**
-   * 受信バッファにあるバイト数を取得する
+   * 受信キューにあるバイト数を取得する
    */
   size_t available();
 
   /**
-   * 受信バッファをflush(空に)する
+   * 受信キューを空にする
    */
   void flush();
 

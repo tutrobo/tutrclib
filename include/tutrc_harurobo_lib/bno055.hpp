@@ -11,6 +11,13 @@ namespace tutrc_harurobo_lib {
 
 class BNO055 {
 public:
+  /**
+   * BNO055初期化
+   *
+   * @param uart tutrc_harurobo_lib::UARTへのポインタ
+   * @param timeout タイムアウト(ms)
+   * @return true: 成功, false: 失敗
+   */
   bool init(UART *uart, uint32_t timeout = 500) {
     uart_ = uart;
     uint32_t start = osKernelGetTickCount();
@@ -32,6 +39,9 @@ public:
     return false;
   }
 
+  /**
+   * BNO055からデータを受信する
+   */
   void update() {
     std::array<int16_t, 3> data;
     if (read_reg(0x1A, reinterpret_cast<uint8_t *>(data.data()), 6)) {
@@ -41,10 +51,19 @@ public:
     }
   }
 
+  /**
+   * x軸中心のオイラー角(rad)を取得する
+   */
   float get_euler_x() { return euler_x_; }
 
+  /**
+   * y軸中心のオイラー角(rad)を取得する
+   */
   float get_euler_y() { return euler_y_; }
 
+  /**
+   * z軸中心のオイラー角(rad)を取得する
+   */
   float get_euler_z() { return euler_z_; }
 
 private:
