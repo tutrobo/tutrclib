@@ -14,7 +14,7 @@ namespace tutrc_harurobo_lib {
 
 class FDCAN : public CANBase {
 public:
-  FDCAN(FDCAN_HandleTypeDef *hfdcan, size_t rx_queue_size = 64);
+  bool init(FDCAN_HandleTypeDef *hfdcan, size_t rx_queue_size = 64);
   bool transmit(const CANMessage *msg) override;
   bool receive(CANMessage *msg, uint32_t timeout) override;
   size_t available() override;

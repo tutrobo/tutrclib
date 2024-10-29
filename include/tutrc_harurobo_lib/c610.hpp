@@ -56,7 +56,7 @@ public:
     ID8,
   };
 
-  C610(CANBase *can) : can_(can) {}
+  bool init(CANBase *can) { can_ = can; }
 
   void update() {
     CANMessage msg;

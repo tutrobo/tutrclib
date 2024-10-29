@@ -11,8 +11,8 @@ namespace tutrc_harurobo_lib {
 
 std::unordered_map<FDCAN_HandleTypeDef *, FDCAN *> FDCAN::instances_;
 
-FDCAN::FDCAN(FDCAN_HandleTypeDef *hfdcan, size_t rx_queue_size)
-    : hfdcan_(hfdcan) {
+bool FDCAN::init(FDCAN_HandleTypeDef *hfdcan, size_t rx_queue_size) {
+  hfdcan_ = hfdcan;
   instances_[hfdcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 
