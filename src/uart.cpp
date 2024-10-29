@@ -14,7 +14,8 @@ namespace tutrc_harurobo_lib {
 std::unordered_map<UART_HandleTypeDef *, UART *> UART::instances_;
 UART *UART::uart_printf_ = nullptr;
 
-UART::UART(UART_HandleTypeDef *huart, size_t rx_queue_size) : huart_(huart) {
+bool UART::init(UART_HandleTypeDef *huart, size_t rx_queue_size) {
+  huart_ = huart;
   instances_[huart_] = this;
   tx_mutex_ = osMutexNew(nullptr);
   rx_mutex_ = osMutexNew(nullptr);
@@ -22,9 +23,7 @@ UART::UART(UART_HandleTypeDef *huart, size_t rx_queue_size) : huart_(huart) {
   rx_sem_ = osSemaphoreNew(1, 1, nullptr);
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(uint8_t), nullptr);
 
-  if (HAL_UART_Receive_IT(huart_, &rx_buf_, 1) != HAL_OK) {
-    Error_Handler();
-  }
+  return HAL_UART_Receive_IT(huart_, &rx_buf_, 1) == HAL_OK;
 }
 
 bool UART::transmit(const uint8_t *data, size_t size) {

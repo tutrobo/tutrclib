@@ -11,7 +11,8 @@ namespace tutrc_harurobo_lib {
 
 class BNO055 {
 public:
-  BNO055(UART *uart) : uart_(uart) {
+  bool init(UART *uart) {
+    uart_ = uart;
     uint32_t start = osKernelGetTickCount();
     while (osKernelGetTickCount() - start < 500) {
       uint8_t data = 0x00;
@@ -26,12 +27,13 @@ public:
       if (!write_reg(0x3D, &data, 1)) {
         continue;
       }
-      break;
+      return true;
     }
+    return false;
   }
 
   void update() {
-    static std::array<int16_t, 3> data;
+    std::array<int16_t, 3> data;
     if (read_reg(0x1A, reinterpret_cast<uint8_t *>(data.data()), 6)) {
       euler_x_ = data[0] / 900.0f;
       euler_y_ = data[1] / 900.0f;

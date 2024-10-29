@@ -60,7 +60,7 @@ public:
    * @param huart UART_HandleTypeDefへのポインタ
    * @param rx_queue_size 受信バッファサイズ
    */
-  UART(UART_HandleTypeDef *huart, size_t rx_queue_size = 64);
+  bool init(UART_HandleTypeDef *huart, size_t rx_queue_size = 64);
 
   /**
    * UART送信
