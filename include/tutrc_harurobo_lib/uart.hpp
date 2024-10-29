@@ -60,10 +60,11 @@ namespace tutrc_harurobo_lib {
 class UART {
 public:
   /**
-   * コンストラクタ
+   * UART初期化
    *
    * @param huart UART_HandleTypeDefへのポインタ
    * @param rx_queue_size 受信バッファサイズ
+   * @return true: 成功, false: 失敗
    */
   bool init(UART_HandleTypeDef *huart, size_t rx_queue_size = 64);
 
