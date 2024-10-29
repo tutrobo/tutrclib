@@ -11,7 +11,7 @@ namespace tutrc_harurobo_lib {
 
 /**
  * FDCAN の Classic CAN モードを用いて C610
- * と通信を行う場合は、tutrc_harurobo_lib::FDCAN
+ * と通信を行う場合は、`tutrc_harurobo_lib::FDCAN`
  * へのポインタを用いて構築してください。
  *
  * @code{.cpp}

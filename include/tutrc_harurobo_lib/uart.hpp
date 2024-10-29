@@ -13,11 +13,7 @@ extern "C" int _write(int file, char *ptr, int len);
 namespace tutrc_harurobo_lib {
 
 /**
- * UARTクラスを使う際は、
- *
- * - USARTx global interrupt
- *
- * を有効化する必要があります。
+ * UARTクラスを使う際は、`USARTx global interrupt` を有効化する必要があります。
  *
  * @code{.cpp}
  * #include "main.h"
