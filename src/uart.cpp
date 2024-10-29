@@ -37,12 +37,12 @@ bool UART::transmit(const uint8_t *data, size_t size) {
 }
 
 bool UART::receive(uint8_t *data, size_t size, uint32_t timeout) {
+  TimeOut_t timeout_state;
+  vTaskSetTimeOutState(&timeout_state);
   ScopedLock lock(rx_mutex_);
   if (!lock.acquire(timeout)) {
     return false;
   }
-  TimeOut_t timeout_state;
-  vTaskSetTimeOutState(&timeout_state);
   while (available() < size) {
     if (xTaskCheckForTimeOut(&timeout_state, &timeout) != pdFALSE) {
       break;
