@@ -9,8 +9,11 @@ namespace tutrc_harurobo_lib {
 std::unordered_map<uint16_t, tutrc_harurobo_lib::GPIO *>
     tutrc_harurobo_lib::GPIO::instances_;
 
-GPIO::GPIO(GPIO_TypeDef *port, uint16_t pin) : port_(port), pin_(pin) {
+bool GPIO::init(GPIO_TypeDef *port, uint16_t pin) {
+  port_ = port;
+  pin_ = pin;
   instances_[pin_] = this;
+  return true;
 }
 
 void GPIO::write(bool state) {

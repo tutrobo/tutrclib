@@ -37,7 +37,10 @@ public:
     SELECT,
   };
 
-  PS3(UART *uart) : uart_(uart) {}
+  bool init(UART *uart) {
+    uart_ = uart;
+    return true;
+  }
 
   void update() {
     keys_prev_ = keys_;

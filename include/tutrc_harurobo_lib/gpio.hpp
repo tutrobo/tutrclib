@@ -10,7 +10,7 @@ namespace tutrc_harurobo_lib {
 
 class GPIO {
 public:
-  GPIO(GPIO_TypeDef *port, uint16_t pin);
+  bool init(GPIO_TypeDef *port, uint16_t pin);
   void write(bool state);
   bool read();
   void toggle();

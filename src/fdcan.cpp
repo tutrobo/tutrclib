@@ -25,10 +25,7 @@ bool FDCAN::init(FDCAN_HandleTypeDef *hfdcan, size_t rx_queue_size) {
     return false;
   }
 
-  if (HAL_FDCAN_Start(hfdcan_) != HAL_OK) {
-    return false;
-  }
-  return true;
+  return HAL_FDCAN_Start(hfdcan_) == HAL_OK;
 }
 
 bool FDCAN::transmit(const CANMessage *msg) {

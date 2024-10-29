@@ -6,11 +6,11 @@
 
 namespace tutrc_harurobo_lib {
 
-Encoder::Encoder(TIM_HandleTypeDef *htim, uint16_t ppr, float period)
-    : htim_(htim), ppr_(ppr), period_(period) {
-  if (HAL_TIM_Encoder_Start(htim_, TIM_CHANNEL_ALL) != HAL_OK) {
-    Error_Handler();
-  }
+bool Encoder::init(TIM_HandleTypeDef *htim, uint16_t ppr, float period) {
+  htim_ = htim;
+  ppr_ = ppr;
+  period_ = period;
+  return HAL_TIM_Encoder_Start(htim_, TIM_CHANNEL_ALL) == HAL_OK;
 }
 
 void Encoder::update() {
