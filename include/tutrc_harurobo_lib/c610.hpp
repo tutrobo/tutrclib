@@ -22,9 +22,14 @@ namespace tutrc_harurobo_lib {
  *
  * extern CAN_HandleTypeDef hcan1;
  *
+ * using namespace tutrc_harurobo_lib;
+ *
+ * CAN can1;
+ * C610 c610;
+ *
  * void example_thread(void *) {
- *   tutrc_harurobo_lib::CAN can1(&hcan1);
- *   tutrc_harurobo_lib::C610 c610(&can1);
+ *   can1.init(&hcan1);
+ *   c610.init(&can1);
  *
  *   while (true) {
  *     c610.update();  // データ送受信
@@ -32,11 +37,11 @@ namespace tutrc_harurobo_lib {
  *     float Kp = 100;
  *     float v_target = 100.0f;
  *     // 現在の速度をrpsで取得
- *     float v_actual = c610.get_rps(tutrc_harurobo_lib::C610::ID::ID1);
+ *     float v_actual = c610.get_rps(C610::ID::ID1);
  *     float error = v_target - v_actual;
  *
  *     // 電流値をmAで指定
- *     c610.set_current(tutrc_harurobo_lib::C610::ID::ID1, Kp * error);
+ *     c610.set_current(C610::ID::ID1, Kp * error);
  *
  *     osDelay(10);
  *   }

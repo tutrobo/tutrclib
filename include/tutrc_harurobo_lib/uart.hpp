@@ -28,9 +28,14 @@ namespace tutrc_harurobo_lib {
  * extern UART_HandleTypeDef huart1;
  * extern UART_HandleTypeDef huart2;
  *
+ * using namespace tutrc_harurobo_lib;
+ *
+ * UART uart1;
+ * UART uart2;
+ *
  * void example_thread(void *) {
- *   tutrc_harurobo_lib::UART uart1(&huart1);
- *   tutrc_harurobo_lib::UART uart2(&huart2);
+ *   uart1.init(&huart1);
+ *   uart2.init(&huart2);
  *
  *   uart2.enable_printf(); // UART2に対してprintf有効化
  *
