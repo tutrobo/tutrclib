@@ -6,11 +6,11 @@
 
 namespace tutrc_harurobo_lib {
 
-PWM::PWM(TIM_HandleTypeDef *htim, uint32_t channel)
-    : htim_(htim), channel_(channel) {
-  if (HAL_TIM_PWM_Start(htim_, channel_) != HAL_OK) {
-    Error_Handler();
-  }
+bool PWM::init(TIM_HandleTypeDef *htim, uint32_t channel) {
+  htim_ = htim;
+  channel_ = channel;
+
+  return HAL_TIM_PWM_Start(htim_, channel_) == HAL_OK;
 }
 
 uint32_t PWM::get_compare() { return __HAL_TIM_GET_COMPARE(htim_, channel_); }

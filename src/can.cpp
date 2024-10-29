@@ -11,12 +11,13 @@ namespace tutrc_harurobo_lib {
 
 std::unordered_map<CAN_HandleTypeDef *, CAN *> CAN::instances_;
 
-CAN::CAN(CAN_HandleTypeDef *hcan, size_t rx_queue_size) : hcan_(hcan) {
+bool CAN::init(CAN_HandleTypeDef *hcan, size_t rx_queue_size) {
+  hcan_ = hcan;
   instances_[hcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 
   if (hcan_->State != HAL_CAN_STATE_READY) {
-    Error_Handler();
+    return false;
   }
 
   CAN_FilterTypeDef filter = {};
@@ -37,17 +38,15 @@ CAN::CAN(CAN_HandleTypeDef *hcan, size_t rx_queue_size) : hcan_(hcan) {
   filter.SlaveStartFilterBank = 14;
 
   if (HAL_CAN_ConfigFilter(hcan_, &filter) != HAL_OK) {
-    Error_Handler();
+    return false;
   }
 
   if (HAL_CAN_ActivateNotification(hcan_, CAN_IT_RX_FIFO0_MSG_PENDING) !=
       HAL_OK) {
-    Error_Handler();
+    return false;
   }
 
-  if (HAL_CAN_Start(hcan_) != HAL_OK) {
-    Error_Handler();
-  }
+  return HAL_CAN_Start(hcan_) == HAL_OK;
 }
 
 bool CAN::transmit(const CANMessage *msg) {

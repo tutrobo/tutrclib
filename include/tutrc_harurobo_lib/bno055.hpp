@@ -11,6 +11,7 @@ namespace tutrc_harurobo_lib {
 
 class BNO055 {
 public:
+  // TODO: timeout引数
   bool init(UART *uart) {
     uart_ = uart;
     uint32_t start = osKernelGetTickCount();
