@@ -11,11 +11,10 @@ namespace tutrc_harurobo_lib {
 
 class BNO055 {
 public:
-  // TODO: timeout引数
-  bool init(UART *uart) {
+  bool init(UART *uart, uint32_t timeout = 500) {
     uart_ = uart;
     uint32_t start = osKernelGetTickCount();
-    while (osKernelGetTickCount() - start < 500) {
+    while (osKernelGetTickCount() - start < timeout) {
       uint8_t data = 0x00;
       if (!write_reg(0x3D, &data, 1)) {
         continue;
