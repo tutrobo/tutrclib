@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.22)
 
 project(tutrc_harurobo_lib LANGUAGES C CXX)
 
+set(CMAKE_C_EXTENSIONS ON)
+
 add_library(${PROJECT_NAME} INTERFACE)
 
 target_sources(${PROJECT_NAME} INTERFACE
