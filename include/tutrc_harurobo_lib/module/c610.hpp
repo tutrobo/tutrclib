@@ -4,8 +4,8 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "can_base.hpp"
-#include "utility.hpp"
+#include "tutrc_harurobo_lib/can_base.hpp"
+#include "tutrc_harurobo_lib/utility.hpp"
 
 namespace tutrc_harurobo_lib {
 

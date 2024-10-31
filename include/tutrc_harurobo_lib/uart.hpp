@@ -62,7 +62,7 @@ public:
    * @param rx_queue_size 受信キューサイズ
    * @return true: 成功, false: 失敗
    */
-  bool init(UART_HandleTypeDef *huart, size_t rx_queue_size = 64);
+  UART(USART_TypeDef *instance, size_t rx_queue_size = 64);
 
   /**
    * UART送信
@@ -100,15 +100,21 @@ public:
 
 private:
   UART_HandleTypeDef *huart_;
-  osMutexId_t tx_mutex_;
-  osMutexId_t rx_mutex_;
   osSemaphoreId_t tx_sem_;
   osSemaphoreId_t rx_sem_;
   osMutexId_t rx_queue_;
   uint8_t rx_buf_;
 
-  static std::unordered_map<UART_HandleTypeDef *, UART *> instances_;
-  static UART *uart_printf_;
+  inline static UART *&get_printf_uart() {
+    static UART *uart = nullptr;
+    return uart;
+  }
+
+  inline static osMutexId_t get_printf_mutex() {
+    static osMutexId_t mutex = osMutexNew(nullptr);
+    return mutex;
+  }
+
   friend void ::HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
   friend void ::HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
   friend void ::HAL_UART_ErrorCallback(UART_HandleTypeDef *huart);

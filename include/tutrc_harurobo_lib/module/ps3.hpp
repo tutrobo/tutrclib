@@ -6,8 +6,8 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "uart.hpp"
-#include "utility.hpp"
+#include "tutrc_harurobo_lib/uart.hpp"
+#include "tutrc_harurobo_lib/utility.hpp"
 
 namespace tutrc_harurobo_lib {
 

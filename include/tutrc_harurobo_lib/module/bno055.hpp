@@ -5,7 +5,7 @@
 
 #include "cmsis_os2.h"
 
-#include "uart.hpp"
+#include "tutrc_harurobo_lib/uart.hpp"
 
 namespace tutrc_harurobo_lib {
 

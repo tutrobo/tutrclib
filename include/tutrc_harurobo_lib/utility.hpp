@@ -3,14 +3,28 @@
 #include <algorithm>
 #include <cmath>
 #include <type_traits>
-
-#include "cmsis_os2.h"
+#include <unordered_map>
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
 
 namespace tutrc_harurobo_lib {
+
+extern "C" void *tutrc_harurobo_lib_get_handle(void *instance);
+
+inline std::unordered_map<void *, void *> &get_instances() {
+  static std::unordered_map<void *, void *> instances;
+  return instances;
+}
+
+template <class T> T get_instance(void *handle) {
+  auto itr = tutrc_harurobo_lib::get_instances().find(handle);
+  if (itr != tutrc_harurobo_lib::get_instances().end()) {
+    return reinterpret_cast<T>(itr->second);
+  }
+  return nullptr;
+}
 
 template <class T>
 constexpr std::underlying_type_t<T> to_underlying(T value) noexcept {
@@ -28,19 +42,5 @@ template <class T> constexpr T normalize_angle(T x) {
   }
   return x;
 }
-
-class ScopedLock {
-public:
-  ScopedLock(osMutexId_t mutex) : mutex_(mutex) {}
-
-  ~ScopedLock() { osMutexRelease(mutex_); }
-
-  bool acquire(uint32_t timeout) {
-    return osMutexAcquire(mutex_, timeout) == osOK;
-  }
-
-private:
-  osMutexId_t mutex_;
-};
 
 } // namespace tutrc_harurobo_lib

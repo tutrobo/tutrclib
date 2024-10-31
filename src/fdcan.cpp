@@ -7,25 +7,28 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "tutrc_harurobo_lib/utility.hpp"
+
 namespace tutrc_harurobo_lib {
 
-std::unordered_map<FDCAN_HandleTypeDef *, FDCAN *> FDCAN::instances_;
-
-bool FDCAN::init(FDCAN_HandleTypeDef *hfdcan, size_t rx_queue_size) {
-  hfdcan_ = hfdcan;
-  instances_[hfdcan_] = this;
+FDCAN::FDCAN(FDCAN_GlobalTypeDef *instance, size_t rx_queue_size) {
+  hfdcan_ = reinterpret_cast<FDCAN_HandleTypeDef *>(
+      tutrc_harurobo_lib_get_handle(instance));
+  get_instances()[hfdcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 
   if (hfdcan_->State != HAL_FDCAN_STATE_READY) {
-    return false;
+    Error_Handler();
   }
 
   if (HAL_FDCAN_ActivateNotification(hfdcan_, FDCAN_IT_RX_FIFO0_NEW_MESSAGE,
                                      0) != HAL_OK) {
-    return false;
+    Error_Handler();
   }
 
-  return HAL_FDCAN_Start(hfdcan_) == HAL_OK;
+  if (HAL_FDCAN_Start(hfdcan_) != HAL_OK) {
+    Error_Handler();
+  }
 }
 
 bool FDCAN::transmit(const CANMessage *msg) {
@@ -91,10 +94,9 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t) {
   static FDCAN_RxHeaderTypeDef rx_header;
   static tutrc_harurobo_lib::CANMessage msg;
 
-  auto itr = tutrc_harurobo_lib::FDCAN::instances_.find(hfdcan);
-  if (itr != tutrc_harurobo_lib::FDCAN::instances_.end()) {
-    tutrc_harurobo_lib::FDCAN *fdcan = itr->second;
-
+  auto fdcan =
+      tutrc_harurobo_lib::get_instance<tutrc_harurobo_lib::FDCAN *>(hfdcan);
+  if (fdcan) {
     for (size_t i = HAL_FDCAN_GetRxFifoFillLevel(hfdcan, FDCAN_RX_FIFO0); i > 0;
          --i) {
       if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &rx_header,
