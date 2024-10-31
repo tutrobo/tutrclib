@@ -55,6 +55,16 @@ void UART::flush() { osMessageQueueReset(rx_queue_); }
 
 void UART::enable_printf() { get_printf_uart() = this; }
 
+UART *&UART::get_printf_uart() {
+  static UART *uart = nullptr;
+  return uart;
+}
+
+osMutexId_t UART::get_printf_mutex() {
+  static osMutexId_t mutex = osMutexNew(nullptr);
+  return mutex;
+}
+
 } // namespace tutrc_harurobo_lib
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
@@ -89,10 +99,9 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
 int _write(int, char *ptr, int len) {
   auto uart = tutrc_harurobo_lib::UART::get_printf_uart();
   if (uart) {
-    auto mutex = tutrc_harurobo_lib::UART::get_printf_mutex();
-    osMutexAcquire(mutex, osWaitForever);
+    osMutexAcquire(tutrc_harurobo_lib::UART::get_printf_mutex(), osWaitForever);
     uart->transmit(reinterpret_cast<uint8_t *>(ptr), len);
-    osMutexRelease(mutex);
+    osMutexRelease(tutrc_harurobo_lib::UART::get_printf_mutex());
     return len;
   }
   return -1;

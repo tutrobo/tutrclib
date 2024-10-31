@@ -105,15 +105,8 @@ private:
   osMutexId_t rx_queue_;
   uint8_t rx_buf_;
 
-  inline static UART *&get_printf_uart() {
-    static UART *uart = nullptr;
-    return uart;
-  }
-
-  inline static osMutexId_t get_printf_mutex() {
-    static osMutexId_t mutex = osMutexNew(nullptr);
-    return mutex;
-  }
+  static UART *&get_printf_uart();
+  static osMutexId_t get_printf_mutex();
 
   friend void ::HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart);
   friend void ::HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
