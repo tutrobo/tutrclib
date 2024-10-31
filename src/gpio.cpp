@@ -8,7 +8,7 @@
 namespace tutrc_harurobo_lib {
 
 GPIO::GPIO(GPIO_TypeDef *port, uint16_t pin) : port_(port), pin_(pin) {
-  get_instances()[reinterpret_cast<void *>(pin_)] = this;
+  set_instance(pin_, this);
 }
 
 void GPIO::write(bool state) {

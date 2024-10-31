@@ -4,14 +4,6 @@ project(tutrc_harurobo_lib LANGUAGES C CXX)
 
 add_library(${PROJECT_NAME} INTERFACE)
 
-target_include_directories(${PROJECT_NAME} INTERFACE include)
-
-target_link_libraries(${PROJECT_NAME} INTERFACE
-  "-u _printf_float"
-  "-Wl,--wrap=__libc_init_array"
-  "-Wl,--wrap=osKernelStart"
-)
-
 target_sources(${PROJECT_NAME} INTERFACE
   src/can.cpp
   src/encoder.cpp
@@ -19,7 +11,15 @@ target_sources(${PROJECT_NAME} INTERFACE
   src/gpio.cpp
   src/pwm.cpp
   src/uart.cpp
-  src/hooks.c
+  src/utility.cpp
+)
+
+target_include_directories(${PROJECT_NAME} INTERFACE include)
+
+target_link_libraries(${PROJECT_NAME} INTERFACE
+  "-u _printf_float"
+  "-Wl,--wrap=__libc_init_array"
+  "-Wl,--wrap=osKernelStart"
 )
 
 find_package(Doxygen)

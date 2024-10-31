@@ -13,7 +13,7 @@ namespace tutrc_harurobo_lib {
 FDCAN::FDCAN(FDCAN_GlobalTypeDef *instance, size_t rx_queue_size) {
   hfdcan_ = reinterpret_cast<FDCAN_HandleTypeDef *>(
       tutrc_harurobo_lib_get_handle(instance));
-  get_instances()[hfdcan_] = this;
+  set_instance(hfdcan_, this);
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 
   if (hfdcan_->State != HAL_FDCAN_STATE_READY) {

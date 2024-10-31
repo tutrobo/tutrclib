@@ -13,7 +13,7 @@ namespace tutrc_harurobo_lib {
 UART::UART(USART_TypeDef *instance, size_t rx_queue_size) {
   huart_ = reinterpret_cast<UART_HandleTypeDef *>(
       tutrc_harurobo_lib_get_handle(instance));
-  get_instances()[huart_] = this;
+  set_instance(huart_, this);
   tx_sem_ = osSemaphoreNew(1, 1, nullptr);
   rx_sem_ = osSemaphoreNew(1, 1, nullptr);
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(uint8_t), nullptr);

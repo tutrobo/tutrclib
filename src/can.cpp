@@ -13,7 +13,7 @@ namespace tutrc_harurobo_lib {
 CAN::CAN(CAN_TypeDef *instance, size_t rx_queue_size) {
   hcan_ = reinterpret_cast<CAN_HandleTypeDef *>(
       tutrc_harurobo_lib_get_handle(instance));
-  get_instances()[hcan_] = this;
+  set_instance(hcan_, this);
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 
   if (hcan_->State != HAL_CAN_STATE_READY) {
