@@ -15,7 +15,7 @@ public:
    * @param channel 使用するPWMチャネル
    * @return true: 成功, false: 失敗
    */
-  bool init(TIM_HandleTypeDef *htim, uint32_t channel);
+  PWM(TIM_TypeDef *instance, uint32_t channel);
 
   /**
    * タイマのカウンタを取得

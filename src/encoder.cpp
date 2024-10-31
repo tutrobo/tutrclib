@@ -3,15 +3,18 @@
 #ifdef HAL_TIM_MODULE_ENABLED
 
 #include "tutrc_harurobo_lib/encoder.hpp"
+#include "tutrc_harurobo_lib/utility.hpp"
 
 namespace tutrc_harurobo_lib {
 
-bool Encoder::init(TIM_HandleTypeDef *htim, uint16_t ppr, float period) {
-  htim_ = htim;
-  ppr_ = ppr;
-  period_ = period;
+Encoder::Encoder(TIM_TypeDef *instance, uint16_t ppr, float period)
+    : ppr_(ppr), period_(period) {
+  htim_ = reinterpret_cast<TIM_HandleTypeDef *>(
+      tutrc_harurobo_lib_get_handle(instance));
 
-  return HAL_TIM_Encoder_Start(htim_, TIM_CHANNEL_ALL) == HAL_OK;
+  if (HAL_TIM_Encoder_Start(htim_, TIM_CHANNEL_ALL) != HAL_OK) {
+    Error_Handler();
+  }
 }
 
 void Encoder::update() {

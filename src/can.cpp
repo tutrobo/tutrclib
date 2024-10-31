@@ -2,22 +2,22 @@
 
 #ifdef HAL_CAN_MODULE_ENABLED
 
-#include "tutrc_harurobo_lib/can.hpp"
-
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "tutrc_harurobo_lib/can.hpp"
+#include "tutrc_harurobo_lib/utility.hpp"
+
 namespace tutrc_harurobo_lib {
 
-std::unordered_map<CAN_HandleTypeDef *, CAN *> CAN::instances_;
-
-bool CAN::init(CAN_HandleTypeDef *hcan, size_t rx_queue_size) {
-  hcan_ = hcan;
-  instances_[hcan_] = this;
+CAN::CAN(CAN_TypeDef *instance, size_t rx_queue_size) {
+  hcan_ = reinterpret_cast<CAN_HandleTypeDef *>(
+      tutrc_harurobo_lib_get_handle(instance));
+  get_instances()[hcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 
   if (hcan_->State != HAL_CAN_STATE_READY) {
-    return false;
+    Error_Handler();
   }
 
   CAN_FilterTypeDef filter = {};
@@ -38,15 +38,17 @@ bool CAN::init(CAN_HandleTypeDef *hcan, size_t rx_queue_size) {
   filter.SlaveStartFilterBank = 14;
 
   if (HAL_CAN_ConfigFilter(hcan_, &filter) != HAL_OK) {
-    return false;
+    Error_Handler();
   }
 
   if (HAL_CAN_ActivateNotification(hcan_, CAN_IT_RX_FIFO0_MSG_PENDING) !=
       HAL_OK) {
-    return false;
+    Error_Handler();
   }
 
-  return HAL_CAN_Start(hcan_) == HAL_OK;
+  if (HAL_CAN_Start(hcan_) != HAL_OK) {
+    Error_Handler();
+  }
 }
 
 bool CAN::transmit(const CANMessage *msg) {
@@ -83,10 +85,8 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
   static CAN_RxHeaderTypeDef rx_header;
   static tutrc_harurobo_lib::CANMessage msg;
 
-  auto itr = tutrc_harurobo_lib::CAN::instances_.find(hcan);
-  if (itr != tutrc_harurobo_lib::CAN::instances_.end()) {
-    tutrc_harurobo_lib::CAN *can = itr->second;
-
+  auto can = tutrc_harurobo_lib::get_instance<tutrc_harurobo_lib::CAN *>(hcan);
+  if (can) {
     for (size_t i = HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0); i > 0;
          --i) {
       if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, msg.data) !=

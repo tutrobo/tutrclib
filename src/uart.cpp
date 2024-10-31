@@ -2,11 +2,10 @@
 
 #ifdef HAL_UART_MODULE_ENABLED
 
-#include "tutrc_harurobo_lib/uart.hpp"
-
 #include "FreeRTOS.h"
 #include "task.h"
 
+#include "tutrc_harurobo_lib/uart.hpp"
 #include "tutrc_harurobo_lib/utility.hpp"
 
 namespace tutrc_harurobo_lib {

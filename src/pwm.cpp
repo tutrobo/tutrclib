@@ -3,14 +3,17 @@
 #ifdef HAL_TIM_MODULE_ENABLED
 
 #include "tutrc_harurobo_lib/pwm.hpp"
+#include "tutrc_harurobo_lib/utility.hpp"
 
 namespace tutrc_harurobo_lib {
 
-bool PWM::init(TIM_HandleTypeDef *htim, uint32_t channel) {
-  htim_ = htim;
-  channel_ = channel;
+PWM::PWM(TIM_TypeDef *instance, uint32_t channel) : channel_(channel) {
+  htim_ = reinterpret_cast<TIM_HandleTypeDef *>(
+      tutrc_harurobo_lib_get_handle(instance));
 
-  return HAL_TIM_PWM_Start(htim_, channel_) == HAL_OK;
+  if (HAL_TIM_PWM_Start(htim_, channel_) != HAL_OK) {
+    Error_Handler();
+  }
 }
 
 uint32_t PWM::get_compare() { return __HAL_TIM_GET_COMPARE(htim_, channel_); }

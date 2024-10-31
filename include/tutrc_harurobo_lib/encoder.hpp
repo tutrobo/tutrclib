@@ -8,7 +8,7 @@ namespace tutrc_harurobo_lib {
 
 class Encoder {
 public:
-  bool init(TIM_HandleTypeDef *htim, uint16_t ppr, float period);
+  Encoder(TIM_TypeDef *htim, uint16_t ppr, float period);
   void update();
   float get_rps();
   float get_rpm();

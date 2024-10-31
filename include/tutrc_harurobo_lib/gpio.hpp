@@ -10,7 +10,7 @@ namespace tutrc_harurobo_lib {
 
 class GPIO {
 public:
-  bool init(GPIO_TypeDef *port, uint16_t pin);
+  GPIO(GPIO_TypeDef *port, uint16_t pin);
   void write(bool state);
   bool read();
   void toggle();
@@ -21,7 +21,6 @@ private:
   uint16_t pin_;
   std::function<void()> exti_callback_;
 
-  static std::unordered_map<uint16_t, GPIO *> instances_;
   friend void ::HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 };
 
