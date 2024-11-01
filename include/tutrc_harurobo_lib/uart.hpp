@@ -4,7 +4,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <unordered_map>
+#include <map>
 
 #include "cmsis_os2.h"
 
@@ -105,6 +105,7 @@ private:
   osMutexId_t rx_queue_;
   uint8_t rx_buf_;
 
+  static std::map<UART_HandleTypeDef *, UART *> &get_instances();
   static UART *&get_printf_uart();
   static osMutexId_t get_printf_mutex();
 

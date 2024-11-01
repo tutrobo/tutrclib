@@ -13,7 +13,7 @@ namespace tutrc_harurobo_lib {
 CAN::CAN(CAN_TypeDef *instance, size_t rx_queue_size) {
   hcan_ = reinterpret_cast<CAN_HandleTypeDef *>(
       tutrc_harurobo_lib_get_handle(instance));
-  set_instance(hcan_, this);
+  get_instances()[hcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 
   if (hcan_->State != HAL_CAN_STATE_READY) {
@@ -79,14 +79,20 @@ bool CAN::receive(CANMessage *msg, uint32_t timeout) {
 
 size_t CAN::available() { return osMessageQueueGetCount(rx_queue_); }
 
+std::map<CAN_HandleTypeDef *, CAN *> &CAN::get_instances() {
+  static std::map<CAN_HandleTypeDef *, CAN *> instances;
+  return instances;
+}
+
 } // namespace tutrc_harurobo_lib
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
   static CAN_RxHeaderTypeDef rx_header;
   static tutrc_harurobo_lib::CANMessage msg;
 
-  auto can = tutrc_harurobo_lib::get_instance<tutrc_harurobo_lib::CAN *>(hcan);
-  if (can) {
+  auto itr = tutrc_harurobo_lib::CAN::get_instances().find(hcan);
+  if (itr != tutrc_harurobo_lib::CAN::get_instances().end()) {
+    tutrc_harurobo_lib::CAN *can = itr->second;
     for (size_t i = HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0); i > 0;
          --i) {
       if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, msg.data) !=

@@ -4,7 +4,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <unordered_map>
+#include <map>
 
 #include "cmsis_os2.h"
 
@@ -22,6 +22,8 @@ public:
 private:
   FDCAN_HandleTypeDef *hfdcan_;
   osMessageQueueId_t rx_queue_;
+
+  static std::map<FDCAN_HandleTypeDef *, FDCAN *> &get_instances();
 
   friend void ::HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan,
                                           uint32_t RxFifo0ITs);

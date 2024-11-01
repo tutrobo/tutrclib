@@ -13,7 +13,7 @@ namespace tutrc_harurobo_lib {
 UART::UART(USART_TypeDef *instance, size_t rx_queue_size) {
   huart_ = reinterpret_cast<UART_HandleTypeDef *>(
       tutrc_harurobo_lib_get_handle(instance));
-  set_instance(huart_, this);
+  get_instances()[huart_] = this;
   tx_sem_ = osSemaphoreNew(1, 1, nullptr);
   rx_sem_ = osSemaphoreNew(1, 1, nullptr);
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(uint8_t), nullptr);
@@ -55,6 +55,11 @@ void UART::flush() { osMessageQueueReset(rx_queue_); }
 
 void UART::enable_printf() { get_printf_uart() = this; }
 
+std::map<UART_HandleTypeDef *, UART *> &UART::get_instances() {
+  static std::map<UART_HandleTypeDef *, UART *> instances;
+  return instances;
+}
+
 UART *&UART::get_printf_uart() {
   static UART *uart = nullptr;
   return uart;
@@ -68,17 +73,17 @@ osMutexId_t UART::get_printf_mutex() {
 } // namespace tutrc_harurobo_lib
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
-  auto uart =
-      tutrc_harurobo_lib::get_instance<tutrc_harurobo_lib::UART *>(huart);
-  if (uart) {
+  auto itr = tutrc_harurobo_lib::UART::get_instances().find(huart);
+  if (itr != tutrc_harurobo_lib::UART::get_instances().end()) {
+    tutrc_harurobo_lib::UART *uart = itr->second;
     osSemaphoreRelease(uart->tx_sem_);
   }
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-  auto uart =
-      tutrc_harurobo_lib::get_instance<tutrc_harurobo_lib::UART *>(huart);
-  if (uart) {
+  auto itr = tutrc_harurobo_lib::UART::get_instances().find(huart);
+  if (itr != tutrc_harurobo_lib::UART::get_instances().end()) {
+    tutrc_harurobo_lib::UART *uart = itr->second;
     osMessageQueuePut(uart->rx_queue_, &uart->rx_buf_, 0, 0);
     osSemaphoreRelease(uart->rx_sem_);
     HAL_UART_Receive_IT(huart, &uart->rx_buf_, 1);
@@ -86,9 +91,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 }
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
-  auto uart =
-      tutrc_harurobo_lib::get_instance<tutrc_harurobo_lib::UART *>(huart);
-  if (uart) {
+  auto itr = tutrc_harurobo_lib::UART::get_instances().find(huart);
+  if (itr != tutrc_harurobo_lib::UART::get_instances().end()) {
+    tutrc_harurobo_lib::UART *uart = itr->second;
     HAL_UART_Abort(huart);
     osSemaphoreRelease(uart->tx_sem_);
     osSemaphoreRelease(uart->rx_sem_);

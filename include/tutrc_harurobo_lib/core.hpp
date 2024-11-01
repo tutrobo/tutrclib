@@ -6,7 +6,9 @@ extern "C" void *tutrc_harurobo_lib_get_handle(void *instance);
 
 namespace tutrc_harurobo_lib {
 
-std::unordered_map<void *, void *> &get_instances();
+std::unordered_map<void *, void *> &pointer_to_pointer();
+
+/* std::unordered_map<void *, void *> &get_instances();
 
 template <class T, class U> void set_instance(T handle, U instance) {
   get_instances()[reinterpret_cast<void *>(handle)] =
@@ -19,6 +21,6 @@ template <class T, class U> T get_instance(U handle) {
     return reinterpret_cast<T>(itr->second);
   }
   return nullptr;
-}
+} */
 
 } // namespace tutrc_harurobo_lib

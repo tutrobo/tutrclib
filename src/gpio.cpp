@@ -8,7 +8,7 @@
 namespace tutrc_harurobo_lib {
 
 GPIO::GPIO(GPIO_TypeDef *port, uint16_t pin) : port_(port), pin_(pin) {
-  set_instance(pin_, this);
+  get_instances()[pin_] = this;
 }
 
 void GPIO::write(bool state) {
@@ -23,12 +23,17 @@ void GPIO::set_exti_callback(std::function<void()> &&callback) {
   exti_callback_ = std::move(callback);
 }
 
+std::map<uint16_t, GPIO *> &GPIO::get_instances() {
+  static std::map<uint16_t, GPIO *> instances;
+  return instances;
+}
+
 } // namespace tutrc_harurobo_lib
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  auto gpio = tutrc_harurobo_lib::get_instance<tutrc_harurobo_lib::GPIO *>(
-      reinterpret_cast<void *>(GPIO_Pin));
-  if (GPIO_AF0_C1SLEEP) {
+  auto itr = tutrc_harurobo_lib::GPIO::get_instances().find(GPIO_Pin);
+  if (itr != tutrc_harurobo_lib::GPIO::get_instances().end()) {
+    tutrc_harurobo_lib::GPIO *gpio = itr->second;
     if (gpio->exti_callback_) {
       gpio->exti_callback_();
     }

@@ -13,7 +13,7 @@ namespace tutrc_harurobo_lib {
 FDCAN::FDCAN(FDCAN_GlobalTypeDef *instance, size_t rx_queue_size) {
   hfdcan_ = reinterpret_cast<FDCAN_HandleTypeDef *>(
       tutrc_harurobo_lib_get_handle(instance));
-  set_instance(hfdcan_, this);
+  get_instances()[hfdcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 
   if (hfdcan_->State != HAL_FDCAN_STATE_READY) {
@@ -87,15 +87,20 @@ bool FDCAN::receive(CANMessage *msg, uint32_t timeout) {
 
 size_t FDCAN::available() { return osMessageQueueGetCount(rx_queue_); }
 
+std::map<FDCAN_HandleTypeDef *, FDCAN *> &FDCAN::get_instances() {
+  static std::map<FDCAN_HandleTypeDef *, FDCAN *> instances;
+  return instances;
+}
+
 } // namespace tutrc_harurobo_lib
 
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t) {
   static FDCAN_RxHeaderTypeDef rx_header;
   static tutrc_harurobo_lib::CANMessage msg;
 
-  auto fdcan =
-      tutrc_harurobo_lib::get_instance<tutrc_harurobo_lib::FDCAN *>(hfdcan);
-  if (fdcan) {
+  auto itr = tutrc_harurobo_lib::FDCAN::get_instances().find(hfdcan);
+  if (itr != tutrc_harurobo_lib::FDCAN::get_instances().end()) {
+    tutrc_harurobo_lib::FDCAN *fdcan = itr->second;
     for (size_t i = HAL_FDCAN_GetRxFifoFillLevel(hfdcan, FDCAN_RX_FIFO0); i > 0;
          --i) {
       if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &rx_header,

@@ -4,7 +4,7 @@
 
 #include <cstdint>
 #include <functional>
-#include <unordered_map>
+#include <map>
 
 namespace tutrc_harurobo_lib {
 
@@ -20,6 +20,8 @@ private:
   GPIO_TypeDef *port_;
   uint16_t pin_;
   std::function<void()> exti_callback_;
+
+  static std::map<uint16_t, GPIO *> &get_instances();
 
   friend void ::HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 };
