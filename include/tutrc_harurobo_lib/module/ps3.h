@@ -10,6 +10,7 @@
 #include "tutrc_harurobo_lib/utility.h"
 
 namespace tutrc_harurobo_lib {
+namespace module {
 
 class PS3 {
 public:
@@ -103,4 +104,5 @@ private:
   uint16_t keys_prev_;
 };
 
+} // namespace module
 } // namespace tutrc_harurobo_lib

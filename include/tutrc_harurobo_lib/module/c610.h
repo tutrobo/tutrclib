@@ -8,6 +8,7 @@
 #include "tutrc_harurobo_lib/utility.h"
 
 namespace tutrc_harurobo_lib {
+namespace module {
 
 /**
  * FDCAN の Classic CAN モードを用いて C610
@@ -131,4 +132,5 @@ private:
   std::array<int16_t, 8> current_target_ = {};
 };
 
+} // namespace module
 } // namespace tutrc_harurobo_lib

@@ -8,6 +8,7 @@
 #include "tutrc_harurobo_lib/uart.h"
 
 namespace tutrc_harurobo_lib {
+namespace module {
 
 class BNO055 {
 public:
@@ -103,4 +104,5 @@ private:
   }
 };
 
+} // namespace module
 } // namespace tutrc_harurobo_lib
