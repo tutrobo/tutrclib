@@ -11,8 +11,7 @@
 namespace tutrc_harurobo_lib {
 
 FDCAN::FDCAN(FDCAN_GlobalTypeDef *instance, size_t rx_queue_size) {
-  hfdcan_ = reinterpret_cast<FDCAN_HandleTypeDef *>(
-      tutrc_harurobo_lib_get_handle(instance));
+  hfdcan_ = get_handles()[instance];
   get_instances()[hfdcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 
@@ -150,6 +149,11 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t) {
       osMessageQueuePut(fdcan->rx_queue_, &msg, 0, 0);
     }
   }
+}
+
+void tutrc_harurobo_lib_register_FDCAN_HandleTypeDef(
+    FDCAN_HandleTypeDef *hfdcan) {
+  tutrc_harurobo_lib::FDCAN::get_handles()[hfdcan->Instance] = hfdcan;
 }
 
 #endif

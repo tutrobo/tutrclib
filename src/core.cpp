@@ -1,10 +1,8 @@
 #include "cmsis_os2.h"
 
-#include "tutrc_harurobo_lib/core.hpp"
+#include "tutrc_harurobo_lib.h"
 
 extern "C" {
-
-void tutrc_harurobo_lib_init();
 
 void __real___libc_init_array(void);
 

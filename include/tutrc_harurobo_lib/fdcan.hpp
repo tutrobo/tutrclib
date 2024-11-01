@@ -9,6 +9,7 @@
 #include "cmsis_os2.h"
 
 #include "can_base.hpp"
+#include "tutrc_harurobo_lib.h"
 
 namespace tutrc_harurobo_lib {
 
@@ -24,9 +25,16 @@ private:
   osMessageQueueId_t rx_queue_;
 
   static std::map<FDCAN_HandleTypeDef *, FDCAN *> &get_instances();
+  inline static std::map<FDCAN_GlobalTypeDef *, FDCAN_HandleTypeDef *> &
+  get_handles() {
+    static std::map<FDCAN_GlobalTypeDef *, FDCAN_HandleTypeDef *> handles;
+    return handles;
+  }
 
   friend void ::HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan,
                                           uint32_t RxFifo0ITs);
+  friend void ::tutrc_harurobo_lib_register_FDCAN_HandleTypeDef(
+      FDCAN_HandleTypeDef *hfdcan);
 };
 
 } // namespace tutrc_harurobo_lib
