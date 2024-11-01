@@ -9,8 +9,7 @@ namespace tutrc_harurobo_lib {
 
 Encoder::Encoder(TIM_TypeDef *instance, uint16_t ppr, float period)
     : ppr_(ppr), period_(period) {
-  htim_ = reinterpret_cast<TIM_HandleTypeDef *>(
-      tutrc_harurobo_lib_get_handle(instance));
+  htim_ = reinterpret_cast<TIM_HandleTypeDef *>(get_handles()[instance]);
 
   if (HAL_TIM_Encoder_Start(htim_, TIM_CHANNEL_ALL) != HAL_OK) {
     Error_Handler();

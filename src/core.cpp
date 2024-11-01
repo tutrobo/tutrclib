@@ -1,6 +1,37 @@
 #include "cmsis_os2.h"
 
 #include "tutrc_harurobo_lib.h"
+#include "tutrc_harurobo_lib/core.hpp"
+
+std::map<void *, void *> &tutrc_harurobo_lib::get_handles() {
+  static std::map<void *, void *> handles;
+  return handles;
+}
+
+#ifdef HAL_TIM_MODULE_ENABLED
+void tutrc_harurobo_lib_register_TIM_HandleTypeDef(TIM_HandleTypeDef *htim) {
+  tutrc_harurobo_lib::get_handles()[htim->Instance] = htim;
+}
+#endif
+
+#ifdef HAL_UART_MODULE_ENABLED
+void tutrc_harurobo_lib_register_UART_HandleTypeDef(UART_HandleTypeDef *huart) {
+  tutrc_harurobo_lib::get_handles()[huart->Instance] = huart;
+}
+#endif
+
+#ifdef HAL_CAN_MODULE_ENABLED
+void tutrc_harurobo_lib_register_CAN_HandleTypeDef(CAN_HandleTypeDef *hcan) {
+  tutrc_harurobo_lib::get_handles()[hcan->Instance] = hcan;
+}
+#endif
+
+#ifdef HAL_FDCAN_MODULE_ENABLED
+void tutrc_harurobo_lib_register_FDCAN_HandleTypeDef(
+    FDCAN_HandleTypeDef *hfdcan) {
+  tutrc_harurobo_lib::get_handles()[hfdcan->Instance] = hfdcan;
+}
+#endif
 
 extern "C" {
 

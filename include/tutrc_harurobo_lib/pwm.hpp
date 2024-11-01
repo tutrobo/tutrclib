@@ -3,9 +3,6 @@
 #include "main.h"
 
 #include <cstdint>
-#include <map>
-
-#include "tutrc_harurobo_lib.h"
 
 namespace tutrc_harurobo_lib {
 
@@ -33,14 +30,6 @@ public:
 private:
   TIM_HandleTypeDef *htim_;
   uint32_t channel_;
-
-  inline static std::map<TIM_TypeDef *, TIM_HandleTypeDef *> &get_handles() {
-    static std::map<TIM_TypeDef *, TIM_HandleTypeDef *> handles;
-    return handles;
-  }
-
-  friend void ::tutrc_harurobo_lib_register_TIM_HandleTypeDef(
-      TIM_HandleTypeDef *htim);
 };
 
 } // namespace tutrc_harurobo_lib

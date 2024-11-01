@@ -8,8 +8,6 @@
 
 #include "cmsis_os2.h"
 
-#include "tutrc_harurobo_lib.h"
-
 extern "C" int _write(int file, char *ptr, int len);
 
 namespace tutrc_harurobo_lib {
@@ -108,11 +106,6 @@ private:
   uint8_t rx_buf_;
 
   static std::map<UART_HandleTypeDef *, UART *> &get_instances();
-  inline static std::map<USART_TypeDef *, UART_HandleTypeDef *> &get_handles() {
-    static std::map<USART_TypeDef *, UART_HandleTypeDef *> handles;
-    return handles;
-  }
-
   static UART *&get_printf_uart();
   static osMutexId_t get_printf_mutex();
 
@@ -120,8 +113,6 @@ private:
   friend void ::HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart);
   friend void ::HAL_UART_ErrorCallback(UART_HandleTypeDef *huart);
   friend int ::_write(int file, char *ptr, int len);
-  friend void ::tutrc_harurobo_lib_register_UART_HandleTypeDef(
-      UART_HandleTypeDef *huart);
 };
 
 } // namespace tutrc_harurobo_lib

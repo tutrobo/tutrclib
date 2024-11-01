@@ -9,7 +9,6 @@
 #include "cmsis_os2.h"
 
 #include "can_base.hpp"
-#include "tutrc_harurobo_lib.h"
 
 namespace tutrc_harurobo_lib {
 
