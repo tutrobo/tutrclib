@@ -11,8 +11,11 @@
 namespace tutrclib {
 
 CAN::CAN(CAN_TypeDef *instance, size_t rx_queue_size) {
-  hcan_ = reinterpret_cast<CAN_HandleTypeDef *>(
-      internal::get_stm32hal_handles()[instance]);
+  hcan_ = internal::HALHandleManager::get<CAN_HandleTypeDef>(instance);
+  if (!hcan_) {
+    Error_Handler();
+  }
+
   get_instances()[hcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 

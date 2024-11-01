@@ -11,8 +11,11 @@
 namespace tutrclib {
 
 FDCAN::FDCAN(FDCAN_GlobalTypeDef *instance, size_t rx_queue_size) {
-  hfdcan_ = reinterpret_cast<FDCAN_HandleTypeDef *>(
-      internal::get_stm32hal_handles()[instance]);
+  hfdcan_ = internal::HALHandleManager::get<FDCAN_HandleTypeDef>(instance);
+  if (!hfdcan_) {
+    Error_Handler();
+  }
+
   get_instances()[hfdcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 

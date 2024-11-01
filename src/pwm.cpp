@@ -8,8 +8,10 @@
 namespace tutrclib {
 
 PWM::PWM(TIM_TypeDef *instance, uint32_t channel) : channel_(channel) {
-  htim_ = reinterpret_cast<TIM_HandleTypeDef *>(
-      internal::get_stm32hal_handles()[instance]);
+  htim_ = internal::HALHandleManager::get<TIM_HandleTypeDef>(instance);
+  if (!htim_) {
+    Error_Handler();
+  }
 
   if (HAL_TIM_PWM_Start(htim_, channel_) != HAL_OK) {
     Error_Handler();

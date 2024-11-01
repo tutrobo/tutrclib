@@ -11,8 +11,11 @@
 namespace tutrclib {
 
 UART::UART(USART_TypeDef *instance, size_t rx_queue_size) {
-  huart_ = reinterpret_cast<UART_HandleTypeDef *>(
-      internal::get_stm32hal_handles()[instance]);
+  huart_ = internal::HALHandleManager::get<UART_HandleTypeDef>(instance);
+  if (!huart_) {
+    Error_Handler();
+  }
+
   get_instances()[huart_] = this;
   tx_sem_ = osSemaphoreNew(1, 1, nullptr);
   rx_sem_ = osSemaphoreNew(1, 1, nullptr);

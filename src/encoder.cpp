@@ -9,8 +9,10 @@ namespace tutrclib {
 
 Encoder::Encoder(TIM_TypeDef *instance, uint16_t ppr, float period)
     : ppr_(ppr), period_(period) {
-  htim_ = reinterpret_cast<TIM_HandleTypeDef *>(
-      internal::get_stm32hal_handles()[instance]);
+  htim_ = internal::HALHandleManager::get<TIM_HandleTypeDef>(instance);
+  if (!htim_) {
+    Error_Handler();
+  }
 
   if (HAL_TIM_Encoder_Start(htim_, TIM_CHANNEL_ALL) != HAL_OK) {
     Error_Handler();
