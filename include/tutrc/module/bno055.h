@@ -5,9 +5,9 @@
 
 #include "cmsis_os2.h"
 
-#include "tutrc_harurobo_lib/uart.h"
+#include "tutrc/uart.h"
 
-namespace tutrc_harurobo_lib {
+namespace tutrc {
 namespace module {
 
 class BNO055 {
@@ -15,7 +15,7 @@ public:
   /**
    * BNO055初期化
    *
-   * @param uart tutrc_harurobo_lib::UARTへのポインタ
+   * @param uart tutrc::UARTへのポインタ
    * @param timeout タイムアウト(ms)
    * @return true: 成功, false: 失敗
    */
@@ -105,4 +105,4 @@ private:
 };
 
 } // namespace module
-} // namespace tutrc_harurobo_lib
+} // namespace tutrc

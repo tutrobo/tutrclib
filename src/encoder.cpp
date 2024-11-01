@@ -2,10 +2,10 @@
 
 #ifdef HAL_TIM_MODULE_ENABLED
 
-#include "tutrc_harurobo_lib/encoder.h"
-#include "tutrc_harurobo_lib/internal/core.h"
+#include "tutrc/encoder.h"
+#include "tutrc/internal/core.h"
 
-namespace tutrc_harurobo_lib {
+namespace tutrc {
 
 Encoder::Encoder(TIM_TypeDef *instance, uint16_t ppr, float period)
     : ppr_(ppr), period_(period) {
@@ -33,6 +33,6 @@ float Encoder::get_rpm() { return get_rps() * 60; }
 
 float Encoder::get_position() { return position_; }
 
-} // namespace tutrc_harurobo_lib
+} // namespace tutrc
 
 #endif

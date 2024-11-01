@@ -4,7 +4,7 @@
 
 #include <cstdint>
 
-namespace tutrc_harurobo_lib {
+namespace tutrc {
 
 class PWM {
 public:
@@ -32,4 +32,4 @@ private:
   uint32_t channel_;
 };
 
-} // namespace tutrc_harurobo_lib
+} // namespace tutrc

@@ -2,10 +2,10 @@
 
 #include <map>
 
-namespace tutrc_harurobo_lib {
+namespace tutrc {
 namespace internal {
 
 std::map<void *, void *> &get_stm32hal_handles();
 
 }
-} // namespace tutrc_harurobo_lib
+} // namespace tutrc

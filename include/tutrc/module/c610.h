@@ -4,26 +4,26 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "tutrc_harurobo_lib/can_base.h"
-#include "tutrc_harurobo_lib/utility.h"
+#include "tutrc/can_base.h"
+#include "tutrc/utility.h"
 
-namespace tutrc_harurobo_lib {
+namespace tutrc {
 namespace module {
 
 /**
  * FDCAN の Classic CAN モードを用いて C610
- * と通信を行う場合は、`tutrc_harurobo_lib::FDCAN`
+ * と通信を行う場合は、`tutrc::FDCAN`
  * へのポインタを用いて構築してください。
  *
  * @code{.cpp}
  * #include "main.h"
  * #include "cmsis_os2.h"
- * #include "tutrc_harurobo_lib/can.h"
- * #include "tutrc_harurobo_lib/c610.h"
+ * #include "tutrc/can.h"
+ * #include "tutrc/c610.h"
  *
  * extern CAN_HandleTypeDef hcan1;
  *
- * using namespace tutrc_harurobo_lib;
+ * using namespace tutrc;
  *
  * CAN can1;
  * C610 c610;
@@ -133,4 +133,4 @@ private:
 };
 
 } // namespace module
-} // namespace tutrc_harurobo_lib
+} // namespace tutrc

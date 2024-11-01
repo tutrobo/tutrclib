@@ -5,10 +5,10 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "tutrc_harurobo_lib/can.h"
-#include "tutrc_harurobo_lib/internal/core.h"
+#include "tutrc/can.h"
+#include "tutrc/internal/core.h"
 
-namespace tutrc_harurobo_lib {
+namespace tutrc {
 
 CAN::CAN(CAN_TypeDef *instance, size_t rx_queue_size) {
   hcan_ = reinterpret_cast<CAN_HandleTypeDef *>(
@@ -80,15 +80,15 @@ std::map<CAN_HandleTypeDef *, CAN *> &CAN::get_instances() {
   return instances;
 }
 
-} // namespace tutrc_harurobo_lib
+} // namespace tutrc
 
 void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
   static CAN_RxHeaderTypeDef rx_header;
-  static tutrc_harurobo_lib::CANMessage msg;
+  static tutrc::CANMessage msg;
 
-  auto itr = tutrc_harurobo_lib::CAN::get_instances().find(hcan);
-  if (itr != tutrc_harurobo_lib::CAN::get_instances().end()) {
-    tutrc_harurobo_lib::CAN *can = itr->second;
+  auto itr = tutrc::CAN::get_instances().find(hcan);
+  if (itr != tutrc::CAN::get_instances().end()) {
+    tutrc::CAN *can = itr->second;
     for (size_t i = HAL_CAN_GetRxFifoFillLevel(hcan, CAN_RX_FIFO0); i > 0;
          --i) {
       if (HAL_CAN_GetRxMessage(hcan, CAN_RX_FIFO0, &rx_header, msg.data) !=
@@ -98,11 +98,11 @@ void HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan) {
 
       switch (rx_header.IDE) {
       case CAN_ID_STD:
-        msg.id_type = tutrc_harurobo_lib::CANIDType::STANDARD;
+        msg.id_type = tutrc::CANIDType::STANDARD;
         msg.id = rx_header.StdId;
         break;
       case CAN_ID_EXT:
-        msg.id_type = tutrc_harurobo_lib::CANIDType::EXTENDED;
+        msg.id_type = tutrc::CANIDType::EXTENDED;
         msg.id = rx_header.ExtId;
         break;
       }

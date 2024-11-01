@@ -4,7 +4,7 @@
 
 #include <cstdint>
 
-namespace tutrc_harurobo_lib {
+namespace tutrc {
 
 class Encoder {
 public:
@@ -24,4 +24,4 @@ private:
   float position_;
 };
 
-} // namespace tutrc_harurobo_lib
+} // namespace tutrc

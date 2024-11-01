@@ -6,7 +6,7 @@
 #include <functional>
 #include <map>
 
-namespace tutrc_harurobo_lib {
+namespace tutrc {
 
 class GPIO {
 public:
@@ -26,4 +26,4 @@ private:
   friend void ::HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin);
 };
 
-} // namespace tutrc_harurobo_lib
+} // namespace tutrc

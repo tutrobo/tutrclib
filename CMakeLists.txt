@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.22)
 
-project(tutrc_harurobo_lib LANGUAGES C CXX)
+project(tutrclib LANGUAGES C CXX)
 
 add_library(${PROJECT_NAME} INTERFACE)
 

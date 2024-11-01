@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace tutrc_harurobo_lib {
+namespace tutrc {
 
 enum class CANIDType {
   STANDARD,
@@ -25,4 +25,4 @@ public:
   virtual size_t available() = 0;
 };
 
-} // namespace tutrc_harurobo_lib
+} // namespace tutrc

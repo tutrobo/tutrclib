@@ -10,7 +10,7 @@
 
 #include "can_base.h"
 
-namespace tutrc_harurobo_lib {
+namespace tutrc {
 
 class CAN : public CANBase {
 public:
@@ -28,4 +28,4 @@ private:
   friend void ::HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
 };
 
-} // namespace tutrc_harurobo_lib
+} // namespace tutrc

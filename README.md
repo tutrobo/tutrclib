@@ -1,4 +1,4 @@
-# tutrc_harurobo_lib
+# tutrclib
 
 とよはし⭐︎ロボコンズ 新入生講習用ライブラリ
 
@@ -10,9 +10,9 @@
 
 ## ドキュメント
 
-### tutrc_harurobo_lib
+### tutrclib
 
-https://tutrobo.github.io/tutrc_harurobo_lib/
+https://tutrobo.github.io/tutrc/
 
 ### CMSIS-RTOS2
  
@@ -43,7 +43,7 @@ Configuration欄から `Advanced settings` を選択し、`USE_NEWLIB_REENTRANT`
 Git submodule として導入するのがおすすめです。プロジェクトのルートで
 
 ```sh
-$ git submodule add https://github.com/tutrobo/tutrc_harurobo_lib.git
+$ git submodule add https://github.com/tutrobo/tutrc.git
 ```
 
 を実行します。
@@ -70,14 +70,14 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 ```cmake
 # ~前略~
 
-add_subdirectory(tutrc_harurobo_lib)
+add_subdirectory(tutrc)
 
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
 
     # Add user defined libraries
-    tutrc_harurobo_lib
+    tutrc
 )
 ```
 
@@ -85,8 +85,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
 `C/C++ General` -> `Paths and Symbols` を開き、Languages から `GNU C++` を選択したあと、
 
-- Includes: `プロジェクトルート/tutrc_harurobo_lib/include`
-- Source Location: `プロジェクトルート/tutrc_harurobo_lib/src`
+- Includes: `プロジェクトルート/tutrc/include`
+- Source Location: `プロジェクトルート/tutrc/src`
 
 を追加します。
 
