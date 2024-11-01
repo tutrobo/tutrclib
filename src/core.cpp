@@ -1,6 +1,6 @@
 #include "cmsis_os2.h"
 
-#include "tutrc_harurobo_lib/utility.hpp"
+#include "tutrc_harurobo_lib/core.hpp"
 
 extern "C" {
 
@@ -8,11 +8,13 @@ void __real___libc_init_array(void);
 
 void __wrap___libc_init_array(void) {}
 
-osStatus_t __real_osKernelStart(void);
+osStatus_t __real_osKernelInitialize(void);
 
-osStatus_t __wrap_osKernelStart(void) {
+osStatus_t __wrap_osKernelInitialize(void) {
+  osStatus_t res = __real_osKernelInitialize();
   __real___libc_init_array();
-  return __real_osKernelStart();
+  // tutrc_harurobo_lib_init();
+  return res;
 }
 }
 

@@ -6,7 +6,7 @@
 #include "task.h"
 
 #include "tutrc_harurobo_lib/can.hpp"
-#include "tutrc_harurobo_lib/utility.hpp"
+#include "tutrc_harurobo_lib/core.hpp"
 
 namespace tutrc_harurobo_lib {
 

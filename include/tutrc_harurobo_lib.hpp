@@ -4,6 +4,8 @@
 
 #include "cmsis_os2.h"
 
+#include "tutrc_harurobo_lib/utility.hpp"
+
 #ifdef HAL_GPIO_MODULE_ENABLED
 #include "tutrc_harurobo_lib/gpio.hpp"
 #endif

@@ -8,12 +8,12 @@ add_library(${PROJECT_NAME} INTERFACE)
 
 target_sources(${PROJECT_NAME} INTERFACE
   src/can.cpp
+  src/core.cpp
   src/encoder.cpp
   src/fdcan.cpp
   src/gpio.cpp
   src/pwm.cpp
   src/uart.cpp
-  src/utility.cpp
 )
 
 target_include_directories(${PROJECT_NAME} INTERFACE include)
@@ -21,7 +21,7 @@ target_include_directories(${PROJECT_NAME} INTERFACE include)
 target_link_libraries(${PROJECT_NAME} INTERFACE
   "-u _printf_float"
   "-Wl,--wrap=__libc_init_array"
-  "-Wl,--wrap=osKernelStart"
+  "-Wl,--wrap=osKernelInitialize"
 )
 
 find_package(Doxygen)
