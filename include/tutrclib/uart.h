@@ -16,23 +16,15 @@ namespace tutrclib {
  * UARTクラスを使う際は、`USARTx global interrupt` を有効化する必要があります。
  *
  * @code{.cpp}
- * #include "main.h"
  * #include <cstdio>
- * #include "cmsis_os2.h"
- * #include "tutrclib/uart.h"
- *
- * extern UART_HandleTypeDef huart1;
- * extern UART_HandleTypeDef huart2;
+ * #include "tutrclib.h"
  *
  * using namespace tutrclib;
  *
- * UART uart1;
- * UART uart2;
+ * UART uart1(USART1);
+ * UART uart2(USART2);
  *
- * void example_thread(void *) {
- *   uart1.init(&huart1);
- *   uart2.init(&huart2);
- *
+ * extern "C" void main_thread(void *) {
  *   uart2.enable_printf(); // UART2に対してprintf有効化
  *
  *   while (true) {

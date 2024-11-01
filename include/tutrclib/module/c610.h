@@ -12,24 +12,19 @@ namespace module {
 
 /**
  * FDCAN の Classic CAN モードを用いて C610
- * と通信を行う場合は、`tutrclib::FDCAN`
- * へのポインタを用いて構築してください。
+ * と通信を行う場合は、`tutrclib::FDCAN` へのポインタを用いて構築してください。
  *
  * @code{.cpp}
- * #include "main.h"
- * #include "cmsis_os2.h"
- * #include "tutrclib/can.h"
- * #include "tutrclib/c610.h"
- *
- * extern CAN_HandleTypeDef hcan1;
+ * #include "tutrclib.h"
+ * #include "tutrclib/module/c610.h"
  *
  * using namespace tutrclib;
+ * using namespace tutrclib::module;
  *
- * CAN can1;
+ * CAN can1(CAN1);
  * C610 c610;
  *
- * void example_thread(void *) {
- *   can1.init(&hcan1);
+ * extern "C" void main_thread(void *) {
  *   c610.init(&can1);
  *
  *   while (true) {
