@@ -4,8 +4,8 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "tutrc_harurobo_lib/can_base.hpp"
-#include "tutrc_harurobo_lib/utility.hpp"
+#include "tutrc_harurobo_lib/can_base.h"
+#include "tutrc_harurobo_lib/utility.h"
 
 namespace tutrc_harurobo_lib {
 
@@ -17,8 +17,8 @@ namespace tutrc_harurobo_lib {
  * @code{.cpp}
  * #include "main.h"
  * #include "cmsis_os2.h"
- * #include "tutrc_harurobo_lib/can.hpp"
- * #include "tutrc_harurobo_lib/c610.hpp"
+ * #include "tutrc_harurobo_lib/can.h"
+ * #include "tutrc_harurobo_lib/c610.h"
  *
  * extern CAN_HandleTypeDef hcan1;
  *

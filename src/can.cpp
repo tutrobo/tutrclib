@@ -5,8 +5,8 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "tutrc_harurobo_lib/can.hpp"
-#include "tutrc_harurobo_lib/core.hpp"
+#include "tutrc_harurobo_lib/can.h"
+#include "tutrc_harurobo_lib/core.h"
 
 namespace tutrc_harurobo_lib {
 

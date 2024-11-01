@@ -8,25 +8,24 @@
 
 #include "cmsis_os2.h"
 
-#include "can_base.hpp"
+#include "can_base.h"
 
 namespace tutrc_harurobo_lib {
 
-class FDCAN : public CANBase {
+class CAN : public CANBase {
 public:
-  FDCAN(FDCAN_GlobalTypeDef *instance, size_t rx_queue_size = 64);
+  CAN(CAN_TypeDef *instance, size_t rx_queue_size = 64);
   bool transmit(const CANMessage *msg) override;
   bool receive(CANMessage *msg, uint32_t timeout) override;
   size_t available() override;
 
 private:
-  FDCAN_HandleTypeDef *hfdcan_;
+  CAN_HandleTypeDef *hcan_;
   osMessageQueueId_t rx_queue_;
 
-  static std::map<FDCAN_HandleTypeDef *, FDCAN *> &get_instances();
+  static std::map<CAN_HandleTypeDef *, CAN *> &get_instances();
 
-  friend void ::HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan,
-                                          uint32_t RxFifo0ITs);
+  friend void ::HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
 };
 
 } // namespace tutrc_harurobo_lib

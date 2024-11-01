@@ -1,7 +1,7 @@
 #include "cmsis_os2.h"
 
 #include "tutrc_harurobo_lib.h"
-#include "tutrc_harurobo_lib/core.hpp"
+#include "tutrc_harurobo_lib/core.h"
 
 std::map<void *, void *> &tutrc_harurobo_lib::get_handles() {
   static std::map<void *, void *> handles;

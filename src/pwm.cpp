@@ -2,8 +2,8 @@
 
 #ifdef HAL_TIM_MODULE_ENABLED
 
-#include "tutrc_harurobo_lib/core.hpp"
-#include "tutrc_harurobo_lib/pwm.hpp"
+#include "tutrc_harurobo_lib/core.h"
+#include "tutrc_harurobo_lib/pwm.h"
 
 namespace tutrc_harurobo_lib {
 

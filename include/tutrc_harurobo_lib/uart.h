@@ -19,7 +19,7 @@ namespace tutrc_harurobo_lib {
  * #include "main.h"
  * #include <cstdio>
  * #include "cmsis_os2.h"
- * #include "tutrc_harurobo_lib/uart.hpp"
+ * #include "tutrc_harurobo_lib/uart.h"
  *
  * extern UART_HandleTypeDef huart1;
  * extern UART_HandleTypeDef huart2;

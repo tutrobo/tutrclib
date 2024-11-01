@@ -6,27 +6,27 @@
 
 #ifdef __cplusplus
 
-#include "tutrc_harurobo_lib/utility.hpp"
+#include "tutrc_harurobo_lib/utility.h"
 
 #ifdef HAL_GPIO_MODULE_ENABLED
-#include "tutrc_harurobo_lib/gpio.hpp"
+#include "tutrc_harurobo_lib/gpio.h"
 #endif
 
 #ifdef HAL_TIM_MODULE_ENABLED
-#include "tutrc_harurobo_lib/encoder.hpp"
-#include "tutrc_harurobo_lib/pwm.hpp"
+#include "tutrc_harurobo_lib/encoder.h"
+#include "tutrc_harurobo_lib/pwm.h"
 #endif
 
 #ifdef HAL_UART_MODULE_ENABLED
-#include "tutrc_harurobo_lib/uart.hpp"
+#include "tutrc_harurobo_lib/uart.h"
 #endif
 
 #ifdef HAL_CAN_MODULE_ENABLED
-#include "tutrc_harurobo_lib/can.hpp"
+#include "tutrc_harurobo_lib/can.h"
 #endif
 
 #ifdef HAL_FDCAN_MODULE_ENABLED
-#include "tutrc_harurobo_lib/fdcan.hpp"
+#include "tutrc_harurobo_lib/fdcan.h"
 #endif
 
 extern "C" {
