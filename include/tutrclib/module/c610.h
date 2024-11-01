@@ -8,7 +8,6 @@
 #include "tutrclib/utility.h"
 
 namespace tutrclib {
-namespace module {
 
 /**
  * FDCAN の Classic CAN モードを用いて C610
@@ -127,5 +126,4 @@ private:
   std::array<int16_t, 8> current_target_ = {};
 };
 
-} // namespace module
 } // namespace tutrclib

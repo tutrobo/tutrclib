@@ -8,7 +8,6 @@
 #include "tutrclib/uart.h"
 
 namespace tutrclib {
-namespace module {
 
 class BNO055 {
 public:
@@ -104,5 +103,4 @@ private:
   }
 };
 
-} // namespace module
 } // namespace tutrclib

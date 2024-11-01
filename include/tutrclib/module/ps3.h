@@ -10,7 +10,6 @@
 #include "tutrclib/utility.h"
 
 namespace tutrclib {
-namespace module {
 
 class PS3 {
 public:
@@ -104,5 +103,4 @@ private:
   uint16_t keys_prev_;
 };
 
-} // namespace module
 } // namespace tutrclib
