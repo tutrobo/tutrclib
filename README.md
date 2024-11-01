@@ -32,11 +32,19 @@ RTOSを使用するにあたって Timebase Source を `SysTick` から任意の
 
 `Pinout & Configuration` -> `System Core` -> `SYS` を選択し、Timebase Source に空いているハードウェアタイマーを指定してください(TIM6 が一般的)。
 
-### CMSIS-RTOS2 の有効化
+### CMSIS-RTOS2 の有効化、`main_thread` の設定
 
 `Pinout & Configuration` -> `Middleware and Software Packs` -> `FREERTOS` を選択し、Interface に `CMSIS_V2` を指定します。
 
 Configuration欄から `Advanced settings` を選択し、`USE_NEWLIB_REENTRANT` を `Enabled` にします。
+
+Configuration欄から `Tasks and Queues` を選択し、`defaultTask` の
+
+- Stack Size (Words): 1024
+- Entry Function: `main_thread`
+- Code Generation Option: As weak
+
+に設定します。
 
 ### プロジェクトにライブラリを追加
 
