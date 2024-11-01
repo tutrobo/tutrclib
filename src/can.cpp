@@ -6,12 +6,13 @@
 #include "task.h"
 
 #include "tutrc_harurobo_lib/can.h"
-#include "tutrc_harurobo_lib/core.h"
+#include "tutrc_harurobo_lib/internal/core.h"
 
 namespace tutrc_harurobo_lib {
 
 CAN::CAN(CAN_TypeDef *instance, size_t rx_queue_size) {
-  hcan_ = reinterpret_cast<CAN_HandleTypeDef *>(get_handles()[instance]);
+  hcan_ = reinterpret_cast<CAN_HandleTypeDef *>(
+      internal::get_stm32hal_handles()[instance]);
   get_instances()[hcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 

@@ -5,13 +5,14 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "tutrc_harurobo_lib/core.h"
+#include "tutrc_harurobo_lib/internal/core.h"
 #include "tutrc_harurobo_lib/uart.h"
 
 namespace tutrc_harurobo_lib {
 
 UART::UART(USART_TypeDef *instance, size_t rx_queue_size) {
-  huart_ = reinterpret_cast<UART_HandleTypeDef *>(get_handles()[instance]);
+  huart_ = reinterpret_cast<UART_HandleTypeDef *>(
+      internal::get_stm32hal_handles()[instance]);
   get_instances()[huart_] = this;
   tx_sem_ = osSemaphoreNew(1, 1, nullptr);
   rx_sem_ = osSemaphoreNew(1, 1, nullptr);

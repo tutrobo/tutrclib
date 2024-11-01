@@ -5,13 +5,14 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "tutrc_harurobo_lib/core.h"
 #include "tutrc_harurobo_lib/fdcan.h"
+#include "tutrc_harurobo_lib/internal/core.h"
 
 namespace tutrc_harurobo_lib {
 
 FDCAN::FDCAN(FDCAN_GlobalTypeDef *instance, size_t rx_queue_size) {
-  hfdcan_ = reinterpret_cast<FDCAN_HandleTypeDef *>(get_handles()[instance]);
+  hfdcan_ = reinterpret_cast<FDCAN_HandleTypeDef *>(
+      internal::get_stm32hal_handles()[instance]);
   get_instances()[hfdcan_] = this;
   rx_queue_ = osMessageQueueNew(rx_queue_size, sizeof(CANMessage), nullptr);
 

@@ -2,14 +2,15 @@
 
 #ifdef HAL_TIM_MODULE_ENABLED
 
-#include "tutrc_harurobo_lib/core.h"
 #include "tutrc_harurobo_lib/encoder.h"
+#include "tutrc_harurobo_lib/internal/core.h"
 
 namespace tutrc_harurobo_lib {
 
 Encoder::Encoder(TIM_TypeDef *instance, uint16_t ppr, float period)
     : ppr_(ppr), period_(period) {
-  htim_ = reinterpret_cast<TIM_HandleTypeDef *>(get_handles()[instance]);
+  htim_ = reinterpret_cast<TIM_HandleTypeDef *>(
+      internal::get_stm32hal_handles()[instance]);
 
   if (HAL_TIM_Encoder_Start(htim_, TIM_CHANNEL_ALL) != HAL_OK) {
     Error_Handler();

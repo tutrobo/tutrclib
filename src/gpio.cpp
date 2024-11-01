@@ -2,7 +2,6 @@
 
 #ifdef HAL_GPIO_MODULE_ENABLED
 
-#include "tutrc_harurobo_lib/core.h"
 #include "tutrc_harurobo_lib/gpio.h"
 
 namespace tutrc_harurobo_lib {
