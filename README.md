@@ -12,7 +12,7 @@
 
 ### tutrclib
 
-https://tutrobo.github.io/tutrc/
+https://tutrobo.github.io/tutrclib/
 
 ### CMSIS-RTOS2
  
@@ -43,7 +43,7 @@ Configuration欄から `Advanced settings` を選択し、`USE_NEWLIB_REENTRANT`
 Git submodule として導入するのがおすすめです。プロジェクトのルートで
 
 ```sh
-$ git submodule add https://github.com/tutrobo/tutrc.git
+$ git submodule add https://github.com/tutrobo/tutrclib.git
 ```
 
 を実行します。
@@ -70,14 +70,14 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 ```cmake
 # ~前略~
 
-add_subdirectory(tutrc)
+add_subdirectory(tutrclib)
 
 # Add linked libraries
 target_link_libraries(${CMAKE_PROJECT_NAME}
     stm32cubemx
 
     # Add user defined libraries
-    tutrc
+    tutrclib
 )
 ```
 
@@ -85,8 +85,8 @@ target_link_libraries(${CMAKE_PROJECT_NAME}
 
 `C/C++ General` -> `Paths and Symbols` を開き、Languages から `GNU C++` を選択したあと、
 
-- Includes: `プロジェクトルート/tutrc/include`
-- Source Location: `プロジェクトルート/tutrc/src`
+- Includes: `プロジェクトルート/tutrclib/include`
+- Source Location: `プロジェクトルート/tutrclib/src`
 
 を追加します。
 

@@ -10,7 +10,7 @@
 
 extern "C" int _write(int file, char *ptr, int len);
 
-namespace tutrc {
+namespace tutrclib {
 
 /**
  * UARTクラスを使う際は、`USARTx global interrupt` を有効化する必要があります。
@@ -19,12 +19,12 @@ namespace tutrc {
  * #include "main.h"
  * #include <cstdio>
  * #include "cmsis_os2.h"
- * #include "tutrc/uart.h"
+ * #include "tutrclib/uart.h"
  *
  * extern UART_HandleTypeDef huart1;
  * extern UART_HandleTypeDef huart2;
  *
- * using namespace tutrc;
+ * using namespace tutrclib;
  *
  * UART uart1;
  * UART uart2;
@@ -115,4 +115,4 @@ private:
   friend int ::_write(int file, char *ptr, int len);
 };
 
-} // namespace tutrc
+} // namespace tutrclib

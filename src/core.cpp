@@ -1,34 +1,34 @@
 #include "cmsis_os2.h"
 
-#include "tutrc.h"
-#include "tutrc/internal/core.h"
+#include "tutrclib.h"
+#include "tutrclib/internal/core.h"
 
-std::map<void *, void *> &tutrc::internal::get_stm32hal_handles() {
+std::map<void *, void *> &tutrclib::internal::get_stm32hal_handles() {
   static std::map<void *, void *> handles;
   return handles;
 }
 
 #ifdef HAL_TIM_MODULE_ENABLED
-void tutrc_register_TIM_HandleTypeDef(TIM_HandleTypeDef *htim) {
-  tutrc::internal::get_stm32hal_handles()[htim->Instance] = htim;
+void tutrclib_register_TIM_HandleTypeDef(TIM_HandleTypeDef *htim) {
+  tutrclib::internal::get_stm32hal_handles()[htim->Instance] = htim;
 }
 #endif
 
 #ifdef HAL_UART_MODULE_ENABLED
-void tutrc_register_UART_HandleTypeDef(UART_HandleTypeDef *huart) {
-  tutrc::internal::get_stm32hal_handles()[huart->Instance] = huart;
+void tutrclib_register_UART_HandleTypeDef(UART_HandleTypeDef *huart) {
+  tutrclib::internal::get_stm32hal_handles()[huart->Instance] = huart;
 }
 #endif
 
 #ifdef HAL_CAN_MODULE_ENABLED
-void tutrc_register_CAN_HandleTypeDef(CAN_HandleTypeDef *hcan) {
-  tutrc::internal::get_stm32hal_handles()[hcan->Instance] = hcan;
+void tutrclib_register_CAN_HandleTypeDef(CAN_HandleTypeDef *hcan) {
+  tutrclib::internal::get_stm32hal_handles()[hcan->Instance] = hcan;
 }
 #endif
 
 #ifdef HAL_FDCAN_MODULE_ENABLED
-void tutrc_register_FDCAN_HandleTypeDef(FDCAN_HandleTypeDef *hfdcan) {
-  tutrc::internal::get_stm32hal_handles()[hfdcan->Instance] = hfdcan;
+void tutrclib_register_FDCAN_HandleTypeDef(FDCAN_HandleTypeDef *hfdcan) {
+  tutrclib::internal::get_stm32hal_handles()[hfdcan->Instance] = hfdcan;
 }
 #endif
 
@@ -45,7 +45,7 @@ osStatus_t __wrap_osKernelInitialize(void) {
   if (res != osOK) {
     return res;
   }
-  tutrc_init();
+  tutrclib_init();
   __real___libc_init_array();
   return osOK;
 }

@@ -4,7 +4,7 @@
 
 #include <cstdint>
 
-namespace tutrc {
+namespace tutrclib {
 
 class Encoder {
 public:
@@ -24,4 +24,4 @@ private:
   float position_;
 };
 
-} // namespace tutrc
+} // namespace tutrclib

@@ -2,10 +2,10 @@
 
 #ifdef HAL_TIM_MODULE_ENABLED
 
-#include "tutrc/internal/core.h"
-#include "tutrc/pwm.h"
+#include "tutrclib/internal/core.h"
+#include "tutrclib/pwm.h"
 
-namespace tutrc {
+namespace tutrclib {
 
 PWM::PWM(TIM_TypeDef *instance, uint32_t channel) : channel_(channel) {
   htim_ = reinterpret_cast<TIM_HandleTypeDef *>(
@@ -22,6 +22,6 @@ void PWM::set_compare(uint32_t compare) {
   __HAL_TIM_SET_COMPARE(htim_, channel_, compare);
 }
 
-} // namespace tutrc
+} // namespace tutrclib
 
 #endif

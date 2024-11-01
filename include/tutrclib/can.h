@@ -10,7 +10,7 @@
 
 #include "can_base.h"
 
-namespace tutrc {
+namespace tutrclib {
 
 class CAN : public CANBase {
 public:
@@ -28,4 +28,4 @@ private:
   friend void ::HAL_CAN_RxFifo0MsgPendingCallback(CAN_HandleTypeDef *hcan);
 };
 
-} // namespace tutrc
+} // namespace tutrclib

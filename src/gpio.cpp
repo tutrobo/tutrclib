@@ -2,9 +2,9 @@
 
 #ifdef HAL_GPIO_MODULE_ENABLED
 
-#include "tutrc/gpio.h"
+#include "tutrclib/gpio.h"
 
-namespace tutrc {
+namespace tutrclib {
 
 GPIO::GPIO(GPIO_TypeDef *port, uint16_t pin) : port_(port), pin_(pin) {
   get_instances()[pin_] = this;
@@ -27,12 +27,12 @@ std::map<uint16_t, GPIO *> &GPIO::get_instances() {
   return instances;
 }
 
-} // namespace tutrc
+} // namespace tutrclib
 
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-  auto itr = tutrc::GPIO::get_instances().find(GPIO_Pin);
-  if (itr != tutrc::GPIO::get_instances().end()) {
-    tutrc::GPIO *gpio = itr->second;
+  auto itr = tutrclib::GPIO::get_instances().find(GPIO_Pin);
+  if (itr != tutrclib::GPIO::get_instances().end()) {
+    tutrclib::GPIO *gpio = itr->second;
     if (gpio->exti_callback_) {
       gpio->exti_callback_();
     }

@@ -10,7 +10,7 @@
 
 #include "can_base.h"
 
-namespace tutrc {
+namespace tutrclib {
 
 class FDCAN : public CANBase {
 public:
@@ -29,4 +29,4 @@ private:
                                           uint32_t RxFifo0ITs);
 };
 
-} // namespace tutrc
+} // namespace tutrclib

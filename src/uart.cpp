@@ -5,10 +5,10 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "tutrc/internal/core.h"
-#include "tutrc/uart.h"
+#include "tutrclib/internal/core.h"
+#include "tutrclib/uart.h"
 
-namespace tutrc {
+namespace tutrclib {
 
 UART::UART(USART_TypeDef *instance, size_t rx_queue_size) {
   huart_ = reinterpret_cast<UART_HandleTypeDef *>(
@@ -70,20 +70,20 @@ osMutexId_t UART::get_printf_mutex() {
   return mutex;
 }
 
-} // namespace tutrc
+} // namespace tutrclib
 
 void HAL_UART_TxCpltCallback(UART_HandleTypeDef *huart) {
-  auto itr = tutrc::UART::get_instances().find(huart);
-  if (itr != tutrc::UART::get_instances().end()) {
-    tutrc::UART *uart = itr->second;
+  auto itr = tutrclib::UART::get_instances().find(huart);
+  if (itr != tutrclib::UART::get_instances().end()) {
+    tutrclib::UART *uart = itr->second;
     osSemaphoreRelease(uart->tx_sem_);
   }
 }
 
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-  auto itr = tutrc::UART::get_instances().find(huart);
-  if (itr != tutrc::UART::get_instances().end()) {
-    tutrc::UART *uart = itr->second;
+  auto itr = tutrclib::UART::get_instances().find(huart);
+  if (itr != tutrclib::UART::get_instances().end()) {
+    tutrclib::UART *uart = itr->second;
     osMessageQueuePut(uart->rx_queue_, &uart->rx_buf_, 0, 0);
     osSemaphoreRelease(uart->rx_sem_);
     HAL_UART_Receive_IT(huart, &uart->rx_buf_, 1);
@@ -91,9 +91,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 }
 
 void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
-  auto itr = tutrc::UART::get_instances().find(huart);
-  if (itr != tutrc::UART::get_instances().end()) {
-    tutrc::UART *uart = itr->second;
+  auto itr = tutrclib::UART::get_instances().find(huart);
+  if (itr != tutrclib::UART::get_instances().end()) {
+    tutrclib::UART *uart = itr->second;
     HAL_UART_Abort(huart);
     osSemaphoreRelease(uart->tx_sem_);
     osSemaphoreRelease(uart->rx_sem_);
@@ -102,11 +102,11 @@ void HAL_UART_ErrorCallback(UART_HandleTypeDef *huart) {
 }
 
 int _write(int, char *ptr, int len) {
-  auto uart = tutrc::UART::get_printf_uart();
+  auto uart = tutrclib::UART::get_printf_uart();
   if (uart) {
-    osMutexAcquire(tutrc::UART::get_printf_mutex(), osWaitForever);
+    osMutexAcquire(tutrclib::UART::get_printf_mutex(), osWaitForever);
     uart->transmit(reinterpret_cast<uint8_t *>(ptr), len);
-    osMutexRelease(tutrc::UART::get_printf_mutex());
+    osMutexRelease(tutrclib::UART::get_printf_mutex());
     return len;
   }
   return -1;

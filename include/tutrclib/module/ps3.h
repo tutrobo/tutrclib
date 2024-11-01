@@ -6,10 +6,10 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "tutrc/uart.h"
-#include "tutrc/utility.h"
+#include "tutrclib/uart.h"
+#include "tutrclib/utility.h"
 
-namespace tutrc {
+namespace tutrclib {
 namespace module {
 
 class PS3 {
@@ -105,4 +105,4 @@ private:
 };
 
 } // namespace module
-} // namespace tutrc
+} // namespace tutrclib

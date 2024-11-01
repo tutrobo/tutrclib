@@ -5,10 +5,10 @@
 #include "FreeRTOS.h"
 #include "task.h"
 
-#include "tutrc/fdcan.h"
-#include "tutrc/internal/core.h"
+#include "tutrclib/fdcan.h"
+#include "tutrclib/internal/core.h"
 
-namespace tutrc {
+namespace tutrclib {
 
 FDCAN::FDCAN(FDCAN_GlobalTypeDef *instance, size_t rx_queue_size) {
   hfdcan_ = reinterpret_cast<FDCAN_HandleTypeDef *>(
@@ -88,15 +88,15 @@ std::map<FDCAN_HandleTypeDef *, FDCAN *> &FDCAN::get_instances() {
   return instances;
 }
 
-} // namespace tutrc
+} // namespace tutrclib
 
 void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t) {
   static FDCAN_RxHeaderTypeDef rx_header;
-  static tutrc::CANMessage msg;
+  static tutrclib::CANMessage msg;
 
-  auto itr = tutrc::FDCAN::get_instances().find(hfdcan);
-  if (itr != tutrc::FDCAN::get_instances().end()) {
-    tutrc::FDCAN *fdcan = itr->second;
+  auto itr = tutrclib::FDCAN::get_instances().find(hfdcan);
+  if (itr != tutrclib::FDCAN::get_instances().end()) {
+    tutrclib::FDCAN *fdcan = itr->second;
     for (size_t i = HAL_FDCAN_GetRxFifoFillLevel(hfdcan, FDCAN_RX_FIFO0); i > 0;
          --i) {
       if (HAL_FDCAN_GetRxMessage(hfdcan, FDCAN_RX_FIFO0, &rx_header,
@@ -107,10 +107,10 @@ void HAL_FDCAN_RxFifo0Callback(FDCAN_HandleTypeDef *hfdcan, uint32_t) {
       msg.id = rx_header.Identifier;
       switch (rx_header.IdType) {
       case FDCAN_STANDARD_ID:
-        msg.id_type = tutrc::CANIDType::STANDARD;
+        msg.id_type = tutrclib::CANIDType::STANDARD;
         break;
       case FDCAN_EXTENDED_ID:
-        msg.id_type = tutrc::CANIDType::EXTENDED;
+        msg.id_type = tutrclib::CANIDType::EXTENDED;
         break;
       }
       switch (rx_header.DataLength) {

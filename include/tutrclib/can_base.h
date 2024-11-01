@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 
-namespace tutrc {
+namespace tutrclib {
 
 enum class CANIDType {
   STANDARD,
@@ -25,4 +25,4 @@ public:
   virtual size_t available() = 0;
 };
 
-} // namespace tutrc
+} // namespace tutrclib
