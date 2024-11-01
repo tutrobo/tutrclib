@@ -22,14 +22,3 @@ osStatus_t __wrap_osKernelInitialize(void) {
   return osOK;
 }
 }
-
-std::unordered_map<void *, void *> &tutrc_harurobo_lib::pointer_to_pointer() {
-  static std::unordered_map<void *, void *> handles;
-  return handles;
-}
-
-/* std::unordered_map<void *, void *> &tutrc_harurobo_lib::get_instances() {
-  static std::unordered_map<void *, void *> instances;
-  return instances;
-}
- */
